@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT TOURNAMENT · Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --bg-panel: #181b2a;
+            --bg-input: #0b0d14;
+            --accent: #ff2a55;
+            --accent-hover: #e01f46;
+            --text-main: #ffffff;
+            --text-muted: #8b92a5;
+            --border-color: #2a2e42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255, 42, 85, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(42, 130, 255, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Шапка */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(15, 17, 26, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 40px; }
+        .logo { font-weight: 900; font-size: 22px; color: var(--accent); letter-spacing: 1px; display: flex; align-items: center; gap: 10px;}
+        .logo-icon { font-size: 26px; }
+        
+        nav { display: flex; gap: 30px; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover, nav a.active { color: var(--text-main); }
+
+        /* Контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Главный баннер */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        .hero h1 { font-size: 56px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
+        .hero h1 span { color: var(--accent); font-style: italic; }
+        .hero p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+        /* Секции */
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: ''; width: 6px; height: 24px; background: var(--accent); display: block;
+        }
+
+        /* Листинг (Таблица матчей) */
+        .listing {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .match-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 1fr 80px;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .match-row:last-child { border-bottom: none; }
+        .match-row:hover { background: rgba(255,255,255,0.02); }
+        .match-date { font-size: 13px; color: var(--text-muted); font-weight: 700; text-align: center; }
+        .team { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .team-1 { justify-content: flex-end; text-align: right; }
+        .team-2 { justify-content: flex-start; text-align: left; }
+        .vs { text-align: center; font-weight: 900; color: var(--accent); font-size: 14px; }
+        .score { text-align: center; font-weight: 900; font-size: 18px; color: var(--text-main); }
+        
+        .match-badge {
+            display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 800;
+            background: rgba(255,42,85,0.2); color: var(--accent); text-transform: uppercase;
+        }
+
+        /* Блок с Google Формой */
+        .registration-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .registration-info h2 { font-size: 32px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
+        .registration-info p { color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
+        .info-list { list-style: none; }
+        .info-list li { margin-bottom: 15px; display: flex; gap: 10px; align-items: flex-start; }
+        .info-list li span { color: var(--accent); font-weight: 900; }
+
+        /* Стилизация iframe Google Формы */
+        .form-container {
+            background: #fff; /* Гугл форма обычно белая */
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .form-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
+        }
+
+        @media (max-width: 900px) {
+            .registration-section { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 36px; }
+            nav { display: none; } /* Прячем меню на мобилках для простоты */
+            .match-row { grid-template-columns: 1fr 50px 1fr; padding: 15px 10px; }
+            .match-date, .score { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <div class="logo"><span class="logo-icon">⟁</span> VALORANT CUP</div>
+            <nav>
+                <a href="#listing" class="active">Матчи</a>
+                <a href="#register">Регистрация</a>
+                <a href="#">Правила</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Заголовок -->
+        <div class="hero">
+            <h1>Битва за <span>Арену</span></h1>
+            <p>Официальный турнир 5х5. Собери команду, зарегистрируйся и покажи свой скилл. Призовой фонд: 10 000 ₽.</p>
+        </div>
+
+        <!-- ЛИСТИНГ МАТЧЕЙ -->
+        <div id="listing">
+            <div class="section-title">Турнирная сетка (Плей-офф)</div>
+            <div class="listing">
+                <!-- Матч 1 -->
+                <div class="match-row">
+                    <div class="match-date">12.11<br>18:00</div>
+                    <div class="team team-1">Team Liquid <span style="color:var(--text-muted);font-size:12px;">(TBD)</span></div>
+                    <div class="score">2 : 0</div>
+                    <div class="team team-2">Sentinels <span style="color:var(--text-muted);font-size:12px;">(TBD)</span></div>
+                    <div class="match-badge">Завершен</div>
+                </div>
+                <!-- Матч 2 -->
+                <div class="match-row">
+                    <div class="match-date">12.11<br>20:00</div>
+                    <div class="team team-1">FNATIC</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">Paper Rex</div>
+                    <div class="match-badge" style="background:rgba(255,255,255,0.1);color:#fff;">Ожидается</div>
+                </div>
+                <!-- Матч 3 -->
+                <div class="match-row">
+                    <div class="match-date">13.11<br>15:00</div>
+                    <div class="team team-1">LOUD</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">DRX</div>
+                    <div class="match-badge" style="background:rgba(255,255,255,0.1);color:#fff;">Ожидается</div>
+                </div>
+                <!-- Матч 4 (Финал) -->
+                <div class="match-row" style="background:rgba(255,42,85,0.05);">
+                    <div class="match-date">14.11<br>19:00</div>
+                    <div class="team team-1">TBD</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">TBD</div>
+                    <div class="match-badge" style="background:var(--accent);color:#fff;">ГРАНД-ФИНАЛ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <div id="register">
+            <div class="section-title">Регистрация на турнир</div>
+            <div class="registration-section">
+                
+                <div class="registration-info">
+                    <h2>Готовы к <span style="color:var(--accent)">бою?</span></h2>
+                    <p>Заполните форму справа. Убедитесь, что вы указали правильный Riot ID и Discord вашей команды. Мы свяжемся с вами для подтверждения участия.</p>
+                    <ul class="info-list">
+                        <li><span>01</span> Сбор команды из 5 человек (можно +1 запасной).</li>
+                        <li><span>02</span> Ранг от Железа до Иммортала (без Радиантов).</li>
+                        <li><span>03</span> Заполнение Google Формы.</li>
+                        <li><span>04</span> Ожидание подтверждения от админов в Discord.</li>
+                    </ul>
+                </div>
+
+                <div class="form-container">
+                    <!-- 
+                        ⚠️ ВАЖНО: ВСТАВЬ СЮДА СВОЮ GOOGLE ФОРМУ ⚠️
+                        Замени тег <iframe> ниже на код твоей формы.
+                        Для этого в Google Формах нажми "Отправить" -> вкладка "< >" -> скопируй код.
+                    -->
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd_ВАША_ССЫЛКА/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
+                    <!-- КОНЕЦ БЛОКА ФОРМЫ -->
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
