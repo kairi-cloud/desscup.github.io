@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VALORANT · Собери свою арену</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <title>VALORANT TOURNAMENT · Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
     <style>
-        /* Базовые настройки и цвета */
         :root {
             --bg-dark: #0f111a;
             --bg-panel: #181b2a;
             --bg-input: #0b0d14;
-            --accent: #ff2a55; /* Валорантский красный/розовый */
+            --accent: #ff2a55;
             --accent-hover: #e01f46;
             --text-main: #ffffff;
             --text-muted: #8b92a5;
@@ -29,8 +28,8 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             background-image: 
-                radial-gradient(circle at 80% 20%, rgba(255, 42, 85, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(42, 130, 255, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 10% 10%, rgba(255, 42, 85, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(42, 130, 255, 0.1) 0%, transparent 40%);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -42,182 +41,123 @@
             justify-content: space-between;
             padding: 20px 40px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(15, 17, 26, 0.8);
+            background: rgba(15, 17, 26, 0.9);
             backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
         .nav-left { display: flex; align-items: center; gap: 40px; }
-        .logo { font-weight: 900; font-size: 20px; color: var(--accent); letter-spacing: 1px; display: flex; align-items: center; gap: 10px;}
-        .logo-icon { font-size: 24px; }
+        .logo { font-weight: 900; font-size: 22px; color: var(--accent); letter-spacing: 1px; display: flex; align-items: center; gap: 10px;}
+        .logo-icon { font-size: 26px; }
         
         nav { display: flex; gap: 30px; }
         nav a { color: var(--text-muted); text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; transition: 0.3s; }
         nav a:hover, nav a.active { color: var(--text-main); }
-        
-        .profile-icon {
-            width: 36px; height: 36px; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-muted); cursor: pointer;
-        }
 
-        /* Главный контейнер */
+        /* Контейнер */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* Хиро-секция */
-        .hero { position: relative; margin-bottom: 30px; }
-        .hero-text h1 { font-size: 64px; font-weight: 900; line-height: 1.1; text-transform: uppercase; margin-bottom: 20px; }
-        .hero-text h1 span { color: var(--accent); font-style: italic; }
-        .hero-text p { color: var(--text-muted); font-size: 16px; max-width: 500px; line-height: 1.5; margin-bottom: 30px; }
-        
-        /* Декоративный элемент справа (заглушка вместо Джетт) */
-        .hero-image-placeholder {
-            position: absolute;
-            right: 0; top: -50px;
-            width: 400px; height: 400px;
-            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400') center/cover;
-            border-radius: 50%;
-            mask-image: radial-gradient(circle, black 50%, transparent 70%);
-            -webkit-mask-image: radial-gradient(circle, black 50%, transparent 70%);
-            opacity: 0.6;
-            pointer-events: none;
+        /* Главный баннер */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        .hero h1 { font-size: 56px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
+        .hero h1 span { color: var(--accent); font-style: italic; }
+        .hero p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+        /* Секции */
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: ''; width: 6px; height: 24px; background: var(--accent); display: block;
         }
 
-        /* Сетка */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-
-        /* Панели */
-        .panel {
+        /* Листинг (Таблица матчей) */
+        .listing {
             background: var(--bg-panel);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 30px;
-            position: relative;
+            overflow: hidden;
+            margin-bottom: 60px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        .panel::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 4px;
-            background: var(--accent); border-top-left-radius: 12px;
+        .match-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 1fr 80px;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .match-row:last-child { border-bottom: none; }
+        .match-row:hover { background: rgba(255,255,255,0.02); }
+        .match-date { font-size: 13px; color: var(--text-muted); font-weight: 700; text-align: center; }
+        .team { font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+        .team-1 { justify-content: flex-end; text-align: right; }
+        .team-2 { justify-content: flex-start; text-align: left; }
+        .vs { text-align: center; font-weight: 900; color: var(--accent); font-size: 14px; }
+        .score { text-align: center; font-weight: 900; font-size: 18px; color: var(--text-main); }
+        
+        .match-badge {
+            display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 800;
+            background: rgba(255,42,85,0.2); color: var(--accent); text-transform: uppercase;
         }
 
-        .panel-title { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; margin-bottom: 5px; }
-        .panel-subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
-
-        /* Форма */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
-        
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        input, select {
-            width: 100%;
-            background: var(--bg-input);
+        /* Блок с Google Формой */
+        .registration-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: var(--bg-panel);
             border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 14px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            outline: none;
-            transition: 0.3s;
-            appearance: none;
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
         }
         
-        input:focus, select:focus { border-color: var(--accent); }
-        
-        /* Кнопки */
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 800;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-transform: uppercase;
-        }
-        
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        
-        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-        .btn-outline:hover { background: rgba(255,255,255,0.05); }
-        
-        .btn-red-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
-        .btn-red-outline:hover { background: rgba(255, 42, 85, 0.1); }
+        .registration-info h2 { font-size: 32px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
+        .registration-info p { color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
+        .info-list { list-style: none; }
+        .info-list li { margin-bottom: 15px; display: flex; gap: 10px; align-items: flex-start; }
+        .info-list li span { color: var(--accent); font-weight: 900; }
 
-        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-
-        /* Участники */
-        .participants-box {
-            border: 2px dashed var(--border-color);
+        /* Стилизация iframe Google Формы */
+        .form-container {
+            background: #fff; /* Гугл форма обычно белая */
             border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            min-height: 200px;
+            overflow: hidden;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        
-        .participants-icon { font-size: 40px; opacity: 0.3; }
-        
-        .player-list { width: 100%; text-align: left; }
-        .player-item {
-            display: flex; justify-content: space-between; padding: 10px; 
-            border-bottom: 1px solid var(--border-color); font-size: 14px;
+        .form-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
         }
-        .player-item span { color: var(--accent); font-weight: 700; }
 
-        /* Генератор команд (нижняя панель) */
-        .generator-panel {
-            display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(90deg, var(--bg-panel) 40%, rgba(24, 27, 42, 0.8)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800') right center/cover;
-            background-blend-mode: overlay;
-        }
-        
-        .gen-content { max-width: 60%; }
-        .gen-content .panel-title { font-size: 24px; }
-        
-        .btn-generate { width: auto; padding: 16px 40px; }
-
-        /* Модальное окно для результатов */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: var(--bg-panel); border: 1px solid var(--accent);
-            padding: 40px; border-radius: 12px; max-width: 800px; width: 90%;
-            text-align: center;
-        }
-        .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 30px 0; }
-        .team-col h3 { color: var(--accent); margin-bottom: 15px; }
-        .team-col ul { list-style: none; text-align: left; }
-        .team-col li { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .hero-text h1 { font-size: 40px; }
-            .hero-image-placeholder { display: none; }
-            .generator-panel { flex-direction: column; text-align: center; gap: 20px; }
-            .gen-content { max-width: 100%; }
-            .btn-generate { width: 100%; }
-            .teams-grid { grid-template-columns: 1fr; gap: 20px; }
+        @media (max-width: 900px) {
+            .registration-section { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 36px; }
+            nav { display: none; } /* Прячем меню на мобилках для простоты */
+            .match-row { grid-template-columns: 1fr 50px 1fr; padding: 15px 10px; }
+            .match-date, .score { display: none; }
         }
     </style>
 </head>
@@ -225,226 +165,92 @@
 
     <header>
         <div class="nav-left">
-            <div class="logo"><span class="logo-icon">⟁</span> VALORANT</div>
+            <div class="logo"><span class="logo-icon">⟁</span> VALORANT CUP</div>
             <nav>
-                <a href="#" class="active">Турнир</a>
-                <a href="#">Таблица</a>
+                <a href="#listing" class="active">Матчи</a>
+                <a href="#register">Регистрация</a>
                 <a href="#">Правила</a>
-                <a href="#">О проекте</a>
             </nav>
         </div>
-        <div class="profile-icon">👤</div>
     </header>
 
     <div class="container">
+        
+        <!-- Заголовок -->
         <div class="hero">
-            <div class="hero-text">
-                <h1>Собери свою<br><span>арену.</span></h1>
-                <p>Случайные команды. Честный баланс. Нижний ручной ввод — добавь игроков и доверь распределение системе.</p>
-            </div>
-            <div class="hero-image-placeholder"></div>
+            <h1>Битва за <span>Арену</span></h1>
+            <p>Официальный турнир 5х5. Собери команду, зарегистрируйся и покажи свой скилл. Призовой фонд: 10 000 ₽.</p>
         </div>
 
-        <div class="grid">
-            <!-- ЛЕВАЯ ПАНЕЛЬ -->
-            <div class="panel">
-                <div class="panel-title">👥 Добавить игрока</div>
-                <div class="panel-subtitle">Укажи текущий ранг и пик за последние 3 акта</div>
+        <!-- ЛИСТИНГ МАТЧЕЙ -->
+        <div id="listing">
+            <div class="section-title">Турнирная сетка (Плей-офф)</div>
+            <div class="listing">
+                <!-- Матч 1 -->
+                <div class="match-row">
+                    <div class="match-date">12.11<br>18:00</div>
+                    <div class="team team-1">Team Liquid <span style="color:var(--text-muted);font-size:12px;">(TBD)</span></div>
+                    <div class="score">2 : 0</div>
+                    <div class="team team-2">Sentinels <span style="color:var(--text-muted);font-size:12px;">(TBD)</span></div>
+                    <div class="match-badge">Завершен</div>
+                </div>
+                <!-- Матч 2 -->
+                <div class="match-row">
+                    <div class="match-date">12.11<br>20:00</div>
+                    <div class="team team-1">FNATIC</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">Paper Rex</div>
+                    <div class="match-badge" style="background:rgba(255,255,255,0.1);color:#fff;">Ожидается</div>
+                </div>
+                <!-- Матч 3 -->
+                <div class="match-row">
+                    <div class="match-date">13.11<br>15:00</div>
+                    <div class="team team-1">LOUD</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">DRX</div>
+                    <div class="match-badge" style="background:rgba(255,255,255,0.1);color:#fff;">Ожидается</div>
+                </div>
+                <!-- Матч 4 (Финал) -->
+                <div class="match-row" style="background:rgba(255,42,85,0.05);">
+                    <div class="match-date">14.11<br>19:00</div>
+                    <div class="team team-1">TBD</div>
+                    <div class="score">- : -</div>
+                    <div class="team team-2">TBD</div>
+                    <div class="match-badge" style="background:var(--accent);color:#fff;">ГРАНД-ФИНАЛ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <div id="register">
+            <div class="section-title">Регистрация на турнир</div>
+            <div class="registration-section">
                 
-                <div class="form-group">
-                    <label>Riot ID</label>
-                    <input type="text" id="riotId" placeholder="Например: DesertEUW">
+                <div class="registration-info">
+                    <h2>Готовы к <span style="color:var(--accent)">бою?</span></h2>
+                    <p>Заполните форму справа. Убедитесь, что вы указали правильный Riot ID и Discord вашей команды. Мы свяжемся с вами для подтверждения участия.</p>
+                    <ul class="info-list">
+                        <li><span>01</span> Сбор команды из 5 человек (можно +1 запасной).</li>
+                        <li><span>02</span> Ранг от Железа до Иммортала (без Радиантов).</li>
+                        <li><span>03</span> Заполнение Google Формы.</li>
+                        <li><span>04</span> Ожидание подтверждения от админов в Discord.</li>
+                    </ul>
                 </div>
 
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Текущий ранг</label>
-                        <select id="currentRank">
-                            <option>Железо 1</option>
-                            <option>Бронза 1</option>
-                            <option>Серебро 1</option>
-                            <option>Золото 1</option>
-                            <option>Платина 1</option>
-                            <option>Алмаз 1</option>
-                            <option>Асцендент 1</option>
-                            <option>Иммортал 1</option>
-                            <option>Радиант</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Пиковый ранг</label>
-                        <select id="peakRank">
-                            <option>Железо 1</option>
-                            <option>Бронза 1</option>
-                            <option>Серебро 1</option>
-                            <option>Золото 1</option>
-                            <option>Платина 1</option>
-                            <option>Алмаз 1</option>
-                            <option>Асцендент 1</option>
-                            <option>Иммортал 1</option>
-                            <option>Радиант</option>
-                        </select>
-                    </div>
+                <div class="form-container">
+                    <!-- 
+                        ⚠️ ВАЖНО: ВСТАВЬ СЮДА СВОЮ GOOGLE ФОРМУ ⚠️
+                        Замени тег <iframe> ниже на код твоей формы.
+                        Для этого в Google Формах нажми "Отправить" -> вкладка "< >" -> скопируй код.
+                    -->
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd_ВАША_ССЫЛКА/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Загрузка…</iframe>
+                    <!-- КОНЕЦ БЛОКА ФОРМЫ -->
                 </div>
 
-                <button class="btn btn-primary" onclick="addPlayer()">+ Добавить игрока</button>
-                
-                <div style="margin-top: 20px; font-size: 12px; color: var(--text-muted); display: flex; gap: 10px;">
-                    <span>ℹ️</span> Пока это демонстрационный прогон: данные хранятся только в этом браузере.
-                </div>
-            </div>
-
-            <!-- ПРАВАЯ ПАНЕЛЬ -->
-            <div class="panel">
-                <div class="panel-title">👥 Участники <span id="playerCount" style="color:var(--accent)">0/10</span></div>
-                <div class="panel-subtitle">Для полного матча нужно 10 игроков</div>
-
-                <div class="participants-box" id="participantsBox">
-                    <div class="participants-icon">👥</div>
-                    <div>Пока никого нет. Добавь первых участников.</div>
-                </div>
-
-                <div class="btn-row">
-                    <button class="btn btn-red-outline" onclick="fillDemo()">📋 Заполнить демо</button>
-                    <button class="btn btn-outline" onclick="clearPlayers()">🗑️ Очистить</button>
-                </div>
             </div>
         </div>
 
-        <!-- НИЖНЯЯ ПАНЕЛЬ -->
-        <div class="panel generator-panel">
-            <div class="gen-content">
-                <div class="panel-title">🎲 Генератор команд / <span style="color:var(--accent)">5 × 5</span></div>
-                <div class="panel-subtitle" style="margin-bottom: 0;">Случайным образом сформируй состав текущего лобби</div>
-            </div>
-            <button class="btn btn-primary btn-generate" onclick="generateTeams()">🔀 Сформировать команды</button>
-        </div>
     </div>
 
-    <!-- Модальное окно с результатами -->
-    <div class="modal" id="resultModal">
-        <div class="modal-content">
-            <h2 style="color: var(--accent); text-transform: uppercase;">Результаты жеребьевки</h2>
-            <div class="teams-grid">
-                <div class="team-col">
-                    <h3>🔴 Команда Атаки</h3>
-                    <ul id="teamAttack"></ul>
-                </div>
-                <div class="team-col">
-                    <h3>🟢 Команда Защиты</h3>
-                    <ul id="teamDefense"></ul>
-                </div>
-            </div>
-            <button class="btn btn-outline" onclick="closeModal()">Закрыть</button>
-        </div>
-    </div>
-
-    <script>
-        // Состояние приложения
-        let players = JSON.parse(localStorage.getItem('valPlayers')) || [];
-
-        // Обновление интерфейса
-        function renderPlayers() {
-            const box = document.getElementById('participantsBox');
-            const count = document.getElementById('playerCount');
-            
-            count.innerText = `${players.length}/10`;
-            count.style.color = players.length === 10 ? '#4ade80' : 'var(--accent)';
-
-            if (players.length === 0) {
-                box.innerHTML = `
-                    <div class="participants-icon">👥</div>
-                    <div>Пока никого нет. Добавь первых участников.</div>
-                `;
-            } else {
-                box.innerHTML = `<div class="player-list">
-                    ${players.map(p => `
-                        <div class="player-item">
-                            <div>${p.id}</div>
-                            <div><span>${p.current}</span> (Пик: ${p.peak})</div>
-                        </div>
-                    `).join('')}
-                </div>`;
-            }
-            // Сохраняем в localStorage
-            localStorage.setItem('valPlayers', JSON.stringify(players));
-        }
-
-        // Добавление игрока
-        function addPlayer() {
-            if (players.length >= 10) {
-                alert("Лобби уже заполнено (10/10)!");
-                return;
-            }
-            const id = document.getElementById('riotId').value.trim();
-            const current = document.getElementById('currentRank').value;
-            const peak = document.getElementById('peakRank').value;
-
-            if (!id) {
-                alert("Введите Riot ID!");
-                return;
-            }
-
-            players.push({ id, current, peak });
-            document.getElementById('riotId').value = '';
-            renderPlayers();
-        }
-
-        // Заполнить демо
-        function fillDemo() {
-            const demoNames = ["JettMain", "SovaGod", "OmenShadow", "RazeBoom", "SageHeal", "ViperTox", "CypherTrap", "ReynaFrag", "KilljoyTurret", "AstraStars"];
-            const ranks = ["Железо 1", "Бронза 2", "Серебро 3", "Золото 1", "Платина 2", "Алмаз 1", "Асцендент 3", "Иммортал 1"];
-            
-            players = []; // Очищаем перед заполнением
-            
-            for (let i = 0; i < 10; i++) {
-                players.push({
-                    id: demoNames[i] + Math.floor(Math.random() * 99),
-                    current: ranks[Math.floor(Math.random() * ranks.length)],
-                    peak: ranks[Math.floor(Math.random() * ranks.length)]
-                });
-            }
-            renderPlayers();
-        }
-
-        // Очистить
-        function clearPlayers() {
-            if (confirm("Очистить список участников?")) {
-                players = [];
-                renderPlayers();
-            }
-        }
-
-        // Генерация команд
-        function generateTeams() {
-            if (players.length < 10) {
-                alert(`Для генерации нужно 10 игроков. Сейчас: ${players.length}/10.`);
-                return;
-            }
-
-            // Перемешиваем (алгоритм Фишера-Йетса)
-            const shuffled = [...players];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-
-            const teamAttack = shuffled.slice(0, 5);
-            const teamDefense = shuffled.slice(5, 10);
-
-            // Заполняем модальное окно
-            document.getElementById('teamAttack').innerHTML = teamAttack.map(p => `<li>${p.id} <br><small style="color:var(--text-muted)">${p.current}</small></li>`).join('');
-            document.getElementById('teamDefense').innerHTML = teamDefense.map(p => `<li>${p.id} <br><small style="color:var(--text-muted)">${p.current}</small></li>`).join('');
-
-            document.getElementById('resultModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('resultModal').style.display = 'none';
-        }
-
-        // Инициализация при загрузке
-        renderPlayers();
-    </script>
 </body>
 </html>
